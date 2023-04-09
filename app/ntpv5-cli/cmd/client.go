@@ -19,10 +19,10 @@ var clientCmd = &cobra.Command{
 	Use:   "client HOSTNAME",
 	Short: "ntp",
 	Args: cobra.MinimumNArgs(1),
-	Run: exec,
+	Run: execClient,
 }
 
-func exec(cmd *cobra.Command, args []string){
+func execClient(cmd *cobra.Command, args []string){
 	// handle, flag and args
 	port, _ := cmd.Flags().GetInt("port")
 	host := args[0]
