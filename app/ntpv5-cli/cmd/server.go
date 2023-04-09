@@ -1,40 +1,79 @@
 /*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
+Copyright © 2023 flano_yuki
 
 */
 package cmd
 
 import (
 	"fmt"
+	"net"
+	"log"
+	"os"
 
 	"github.com/spf13/cobra"
+        "github.com/flano-yuki/ntp5-go-exp/internal/ntpv5"
 )
 
 // serverCmd represents the server command
 var serverCmd = &cobra.Command{
 	Use:   "server",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "ntpv5 server",
+	Run: execServer,
+}
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("server called")
-	},
+func execServer(cmd *cobra.Command, args []string){
+        // handle, flag and args
+        port, _ := cmd.Flags().GetInt("port")
+        bind, _ := cmd.Flags().GetString("bind")
+
+	fmt.Println("port, bind:", port, bind)
+
+	// Listen server
+	udpAddr := &net.UDPAddr{
+		IP:   net.ParseIP(bind),
+		Port: port,
+	}
+	conn, err := net.ListenUDP("udp", udpAddr)
+
+	if err != nil {
+		log.Fatalln(err)
+		os.Exit(1)
+	}
+	readBuffer := make([]byte, 150)
+	for {
+		length, addr, err := conn.ReadFromUDP(readBuffer)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		go func() {
+			receiveTimestamp := ntpv5.GetTimestampNow()
+
+			receivedNtpv5data := ntpv5.Decode(readBuffer[:length])
+			verifyNtpv5Data(receivedNtpv5data)
+
+		        ntpv5data := ntpv5.NewServerNtpv5Data()
+			ntpv5data.ClientCookie = receivedNtpv5data.ClientCookie
+			ntpv5data.ReceiveTimestamp = receiveTimestamp
+
+		        buffer := make([]byte, 48)
+
+			transmitTimestamp := ntpv5.GetTimestampNow()
+			ntpv5data.TransmitTimestamp = transmitTimestamp
+		        ntpv5.Encode(buffer, ntpv5data)
+
+			_, _ = conn.WriteTo(buffer, addr)
+		}()
+	}
+}
+
+func verifyNtpv5Data (d ntpv5.Ntpv5Data) bool {
+	return true
 }
 
 func init() {
 	rootCmd.AddCommand(serverCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// serverCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// serverCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+        serverCmd.Flags().IntP("port", "p", 10123, "Target Aort number")
+        serverCmd.Flags().StringP("bind", "b", "0.0.0.0", "Bind Adress")
+        serverCmd.Flags().BoolP("verbose", "v", false, "verbose")
 }

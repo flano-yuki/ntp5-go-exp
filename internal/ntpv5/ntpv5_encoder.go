@@ -4,33 +4,33 @@ import (
 	"encoding/binary"
 )
 
-func Encode(b []byte,p *Ntpv5Data)  {
+func Encode(b []byte,d *Ntpv5Data)  {
 	//var b []byte
-	b[0] = byte( ((p.LI & 3) << 6) + (p.VN & 7) << 3 + (p.Mode & 7) )
-	b[1] = byte(p.Stratum)
-	b[2] = byte(p.Poll)
-	b[3] = byte(p.Precision)
-	b[4] = byte(p.Timescale)
-	b[5] = byte(p.Era)
-	b[6] = byte((p.Flags>>8) & 255)
-	b[7] = byte(p.Flags & 255)
+	b[0] = byte( ((d.LI & 3) << 6) + (d.VN & 7) << 3 + (d.Mode & 7) )
+	b[1] = byte(d.Stratum)
+	b[2] = byte(d.Poll)
+	b[3] = byte(d.Precision)
+	b[4] = byte(d.Timescale)
+	b[5] = byte(d.Era)
+	b[6] = byte((d.Flags>>8) & 255)
+	b[7] = byte(d.Flags & 255)
 
 	tmp := make([]byte, 4)
-	binary.BigEndian.PutUint32(tmp, uint32(p.RootDelay))
+	binary.BigEndian.PutUint32(tmp, uint32(d.RootDelay))
 	copy(b[8:12], tmp[0:4])
-	binary.BigEndian.PutUint32(tmp, uint32(p.RootDispersion))
+	binary.BigEndian.PutUint32(tmp, uint32(d.RootDispersion))
 	copy(b[12:16], tmp[0:4])
 
 	tmp = make([]byte, 8)
-        binary.BigEndian.PutUint64(tmp, uint64(p.ServerCookie))
+        binary.BigEndian.PutUint64(tmp, uint64(d.ServerCookie))
 	copy(b[16:24], tmp[0:8])
-        binary.BigEndian.PutUint64(tmp, uint64(p.ClientCookie))
+        binary.BigEndian.PutUint64(tmp, uint64(d.ClientCookie))
 	copy(b[24:32], tmp[0:8])
 
 
-        binary.BigEndian.PutUint64(tmp, uint64(p.ReceiveTimestamp))
+        binary.BigEndian.PutUint64(tmp, uint64(d.ReceiveTimestamp))
 	copy(b[32:40], tmp[0:8])
-        binary.BigEndian.PutUint64(tmp, uint64(p.TransmitTimestamp))
+        binary.BigEndian.PutUint64(tmp, uint64(d.TransmitTimestamp))
 	copy(b[40:48], tmp[0:8])
 //	return b
 }

@@ -2,6 +2,7 @@ package ntpv5
 
 import (
 	"fmt"
+	"time"
 )
 
 // https://www.ietf.org/archive/id/draft-mlichvar-ntp-ntpv5-07.html#section-4
@@ -55,4 +56,35 @@ func NewClientNtpv5Data() *Ntpv5Data{
 		TransmitTimestamp: 0,
 
 	}
+}
+
+func NewServerNtpv5Data() *Ntpv5Data{
+	return &Ntpv5Data{
+		LI: 0,
+		VN: 5,
+		Mode: 4,
+		Stratum: 1,
+		Poll: 1,
+		Precision: 236,
+		Timescale: 0,
+		Era: 0,
+		Flags: 0,
+		RootDelay: 0,
+		RootDispersion: 0,
+		ServerCookie: 0,
+		ClientCookie: 0,
+		ReceiveTimestamp: 0,
+		TransmitTimestamp: 0,
+
+	}
+}
+
+func GetTimestampNow() uint64 {
+	now := time.Now()
+	sec := uint64(now.Unix()) + 2208988800
+	fmt.Println(now.Nanosecond())
+	nanosec := uint64( (float64(now.Nanosecond())/1000000000) * (1<<32))
+	timestamp := (sec << 32) +  nanosec
+
+	return timestamp
 }
