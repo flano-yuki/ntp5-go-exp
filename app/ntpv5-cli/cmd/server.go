@@ -39,9 +39,9 @@ func execServer(cmd *cobra.Command, args []string){
 		log.Fatalln(err)
 		os.Exit(1)
 	}
-	readBuffer := make([]byte, 150)
+	readBuffer := make([]byte, 256)
 	for {
-		length, addr, err := conn.ReadFromUDP(readBuffer)
+		readLength, addr, err := conn.ReadFromUDP(readBuffer)
 		if err != nil {
 			log.Fatalln(err)
 		}
@@ -49,20 +49,24 @@ func execServer(cmd *cobra.Command, args []string){
 		go func() {
 			receiveTimestamp := ntpv5.GetTimestampNow()
 
-			receivedNtpv5data := ntpv5.Decode(readBuffer[:length])
+			receivedNtpv5data := ntpv5.Decode(readBuffer[:readLength])
+			fmt.Println("Receive NTPv5 Data: \n", receivedNtpv5data)
+
 			verifyNtpv5Data(receivedNtpv5data)
 
 		        ntpv5data := ntpv5.NewServerNtpv5Data()
 			ntpv5data.ClientCookie = receivedNtpv5data.ClientCookie
 			ntpv5data.ReceiveTimestamp = receiveTimestamp
 
-		        buffer := make([]byte, 48)
+		        buffer := make([]byte, 512)
 
 			transmitTimestamp := ntpv5.GetTimestampNow()
 			ntpv5data.TransmitTimestamp = transmitTimestamp
-		        ntpv5.Encode(buffer, ntpv5data)
+			fmt.Println("Send NTPv5 Data: \n", ntpv5data)
+			writeLength := ntpv5.Encode(buffer, ntpv5data)
 
-			_, _ = conn.WriteTo(buffer, addr)
+			_, _ = conn.WriteTo(buffer[:writeLength], addr)
+			fmt.Println()
 		}()
 	}
 }

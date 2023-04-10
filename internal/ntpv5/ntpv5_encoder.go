@@ -2,9 +2,12 @@ package ntpv5
 
 import (
 	"encoding/binary"
+	//"fmt"
 )
 
-func Encode(b []byte,d *Ntpv5Data)  {
+func Encode(b []byte,d *Ntpv5Data) int {
+	length := 48
+
 	//var b []byte
 	b[0] = byte( ((d.LI & 3) << 6) + (d.VN & 7) << 3 + (d.Mode & 7) )
 	b[1] = byte(d.Stratum)
@@ -32,5 +35,16 @@ func Encode(b []byte,d *Ntpv5Data)  {
 	copy(b[32:40], tmp[0:8])
         binary.BigEndian.PutUint64(tmp, uint64(d.TransmitTimestamp))
 	copy(b[40:48], tmp[0:8])
-//	return b
+
+	if (d.ReferenceIDsResponseEx.Length != 0){
+		ex := make([]byte, d.ReferenceIDsResponseEx.Length/8-1)
+		ex[0], ex[1] = 0xF5, 0x04
+		ex[2] = byte(d.ReferenceIDsResponseEx.Length >> 8)
+		ex[3] = byte(d.ReferenceIDsResponseEx.Length & 255)
+		b = append(b, ex...)
+
+		length += int(d.ReferenceIDsResponseEx.Length)
+	}
+
+	return length
 }

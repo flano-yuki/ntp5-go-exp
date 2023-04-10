@@ -29,12 +29,10 @@ func execClient(cmd *cobra.Command, args []string){
 
 	// struct packet data
 	ntpv5data := ntpv5.NewClientNtpv5Data()
-	fmt.Println("Send NTPv5 Data")
-	fmt.Printf("", ntpv5data)
-	fmt.Println("\n")
+	fmt.Println("Send NTPv5 Data: \n", ntpv5data)
 
-	buffer := make([]byte, 48)
-	ntpv5.Encode(buffer, ntpv5data)
+	buffer := make([]byte, 256)
+	writeLength := ntpv5.Encode(buffer, ntpv5data)
 
 
 	// udp send
@@ -46,18 +44,17 @@ func execClient(cmd *cobra.Command, args []string){
 
 	defer conn.Close()
 
-	_, err = conn.Write(buffer)
+	_, err = conn.Write(buffer[:writeLength])
 	if err != nil {
 		panic(err)
 	}
 	readBuffer := make([]byte, 1500)
-	length, err := conn.Read(readBuffer)
+	readLength, err := conn.Read(readBuffer)
 	if err != nil {
 		panic(err)
 	}
-	receivedNtpv5data := ntpv5.Decode(readBuffer[:length])
-	fmt.Println("Received NTPv5 Data")
-	fmt.Printf("", receivedNtpv5data)
+	receivedNtpv5data := ntpv5.Decode(readBuffer[:readLength])
+	fmt.Println("Received NTPv5 Data\n", receivedNtpv5data)
 	fmt.Println("\n")
 
 }
