@@ -6,7 +6,7 @@ import (
 )
 
 func Encode(d Ntpv5Data) []byte {
-	b := make([]byte, 256)
+	b := make([]byte, 48)
 	length := 48
 
 	//var b []byte
@@ -37,11 +37,12 @@ func Encode(d Ntpv5Data) []byte {
         binary.BigEndian.PutUint64(tmp, uint64(d.TransmitTimestamp))
 	copy(b[40:48], tmp[0:8])
 
-	if (d.ReferenceIDsResponseEx.Length != 0){
-		ex := make([]byte, d.ReferenceIDsResponseEx.Length/8-1)
+	if (d.ReferenceIDsResponseEx.Length > 0){
+		ex := make([]byte, d.ReferenceIDsResponseEx.Length)
 		ex[0], ex[1] = 0xF5, 0x04
 		ex[2] = byte(d.ReferenceIDsResponseEx.Length >> 8)
 		ex[3] = byte(d.ReferenceIDsResponseEx.Length & 255)
+
 		b = append(b, ex...)
 
 		length += int(d.ReferenceIDsResponseEx.Length)
