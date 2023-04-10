@@ -44,8 +44,8 @@ func (d Ntpv5Data) String() string{
 		d.ClientCookie, d.ReceiveTimestamp, d.TransmitTimestamp)
 }
 
-func NewClientNtpv5Data() *Ntpv5Data{
-	return &Ntpv5Data{
+func NewClientNtpv5Data() Ntpv5Data{
+	return Ntpv5Data{
 		LI: 0,
 		VN: 5,
 		Mode: 3,
@@ -64,8 +64,8 @@ func NewClientNtpv5Data() *Ntpv5Data{
 	}
 }
 
-func NewServerNtpv5Data() *Ntpv5Data{
-	return &Ntpv5Data{
+func NewServerNtpv5Data() Ntpv5Data{
+	return Ntpv5Data{
 		LI: 0,
 		VN: 5,
 		Mode: 4,

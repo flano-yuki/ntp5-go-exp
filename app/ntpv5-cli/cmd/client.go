@@ -31,9 +31,7 @@ func execClient(cmd *cobra.Command, args []string){
 	ntpv5data := ntpv5.NewClientNtpv5Data()
 	fmt.Println("Send NTPv5 Data: \n", ntpv5data)
 
-	buffer := make([]byte, 256)
-	writeLength := ntpv5.Encode(buffer, ntpv5data)
-
+	buffer := ntpv5.Encode(ntpv5data)
 
 	// udp send
 	conn, err := net.Dial("udp", host + ":" + strconv.Itoa(port))
@@ -44,7 +42,7 @@ func execClient(cmd *cobra.Command, args []string){
 
 	defer conn.Close()
 
-	_, err = conn.Write(buffer[:writeLength])
+	_, err = conn.Write(buffer)
 	if err != nil {
 		panic(err)
 	}

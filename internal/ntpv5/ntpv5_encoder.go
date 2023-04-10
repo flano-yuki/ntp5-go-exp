@@ -5,7 +5,8 @@ import (
 	//"fmt"
 )
 
-func Encode(b []byte,d *Ntpv5Data) int {
+func Encode(d Ntpv5Data) []byte {
+	b := make([]byte, 256)
 	length := 48
 
 	//var b []byte
@@ -46,5 +47,5 @@ func Encode(b []byte,d *Ntpv5Data) int {
 		length += int(d.ReferenceIDsResponseEx.Length)
 	}
 
-	return length
+	return b[:length]
 }

@@ -58,14 +58,12 @@ func execServer(cmd *cobra.Command, args []string){
 			ntpv5data.ClientCookie = receivedNtpv5data.ClientCookie
 			ntpv5data.ReceiveTimestamp = receiveTimestamp
 
-		        buffer := make([]byte, 512)
-
 			transmitTimestamp := ntpv5.GetTimestampNow()
 			ntpv5data.TransmitTimestamp = transmitTimestamp
 			fmt.Println("Send NTPv5 Data: \n", ntpv5data)
-			writeLength := ntpv5.Encode(buffer, ntpv5data)
+			buffer := ntpv5.Encode(ntpv5data)
 
-			_, _ = conn.WriteTo(buffer[:writeLength], addr)
+			_, _ = conn.WriteTo(buffer, addr)
 			fmt.Println()
 		}()
 	}
