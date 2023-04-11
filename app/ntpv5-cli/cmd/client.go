@@ -18,7 +18,7 @@ import (
 
 var clientCmd = &cobra.Command{
 	Use:   "client HOSTNAME",
-	Short: "ntp",
+	Short: "ntpv5 client",
 	Args: cobra.MinimumNArgs(1),
 	Run: execClient,
 }
@@ -62,8 +62,6 @@ func execClient(cmd *cobra.Command, args []string){
 			Draft: draft,
 		}
 	}
-	fmt.Println("Send NTPv5 Data: \n", ntpv5data)
-
 	buffer := ntpv5.Encode(ntpv5data)
 
 	// udp send
@@ -76,6 +74,7 @@ func execClient(cmd *cobra.Command, args []string){
 	conn.SetReadDeadline(time.Now().Add(3 * time.Second))
 	defer conn.Close()
 
+	fmt.Println("Send NTPv5 Data(" + conn.RemoteAddr().String() + "): \n", ntpv5data)
 	_, err = conn.Write(buffer)
 	if err != nil {
 		panic(err)
@@ -86,7 +85,7 @@ func execClient(cmd *cobra.Command, args []string){
 		panic(err)
 	}
 	receivedNtpv5data := ntpv5.Decode(readBuffer[:readLength])
-	fmt.Println("Received NTPv5 Data\n", receivedNtpv5data)
+	fmt.Println("Received NTPv5 Data(" + conn.RemoteAddr().String() + "):\n", receivedNtpv5data)
 	fmt.Println("\n")
 
 }

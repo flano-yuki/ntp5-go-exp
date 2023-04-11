@@ -30,10 +30,6 @@ func execServer(cmd *cobra.Command, args []string){
         timescale, _ := cmd.Flags().GetInt("timescale")
         flags, _ := cmd.Flags().GetInt("flags")
 
-
-
-	fmt.Println("port, bind:", port, bind)
-
 	// Listen server
 	udpAddr := &net.UDPAddr{
 		IP:   net.ParseIP(bind),
@@ -58,7 +54,7 @@ func execServer(cmd *cobra.Command, args []string){
 			receiveTimestamp := ntpv5.GetTimestampNow()
 
 			receivedNtpv5data := ntpv5.Decode(readBuffer[:readLength])
-			fmt.Println("Receive NTPv5 Data: \n", receivedNtpv5data)
+			fmt.Println("Receive NTPv5 Data(" + addr.String() + "): \n", receivedNtpv5data)
 			fmt.Println("refid: \n", receivedNtpv5data.ReferenceIDsRequestEx)
 
 			verifyNtpv5Data(receivedNtpv5data)
@@ -97,7 +93,7 @@ func execServer(cmd *cobra.Command, args []string){
 			transmitTimestamp := ntpv5.GetTimestampNow()
 			ntpv5data.TransmitTimestamp = transmitTimestamp
 
-			fmt.Println("Send NTPv5 Data: \n", ntpv5data)
+			fmt.Println("Send NTPv5 Data(" + addr.String() + "): \n", ntpv5data)
 
 			buffer := ntpv5.Encode(ntpv5data)
 
@@ -114,7 +110,7 @@ func verifyNtpv5Data (d ntpv5.Ntpv5Data) bool {
 
 func init() {
 	rootCmd.AddCommand(serverCmd)
-        serverCmd.Flags().IntP("port", "p", 10123, "Target Aort number")
+        serverCmd.Flags().IntP("port", "p", 10123, "Target Port number")
         serverCmd.Flags().StringP("bind", "b", "0.0.0.0", "Bind Adress")
 	serverCmd.Flags().IntP("timescale", "t", 0, "Timescale type")
 	serverCmd.Flags().IntP("flags", "f", 0, "Flags")
