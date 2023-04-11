@@ -25,6 +25,12 @@ func execServer(cmd *cobra.Command, args []string){
         // handle, flag and args
         port, _ := cmd.Flags().GetInt("port")
         bind, _ := cmd.Flags().GetString("bind")
+        info, _ := cmd.Flags().GetInt("info")
+        draft, _ := cmd.Flags().GetString("draft")
+        timescale, _ := cmd.Flags().GetInt("timescale")
+        flags, _ := cmd.Flags().GetInt("flags")
+
+
 
 	fmt.Println("port, bind:", port, bind)
 
@@ -53,6 +59,7 @@ func execServer(cmd *cobra.Command, args []string){
 
 			receivedNtpv5data := ntpv5.Decode(readBuffer[:readLength])
 			fmt.Println("Receive NTPv5 Data: \n", receivedNtpv5data)
+			fmt.Println("refid: \n", receivedNtpv5data.ReferenceIDsRequestEx)
 
 			verifyNtpv5Data(receivedNtpv5data)
 
@@ -60,11 +67,31 @@ func execServer(cmd *cobra.Command, args []string){
 		        ntpv5data := ntpv5.NewServerNtpv5Data()
 			ntpv5data.ClientCookie = receivedNtpv5data.ClientCookie
 			ntpv5data.ReceiveTimestamp = receiveTimestamp
+			ntpv5data.Timescale = uint8(timescale)
+			ntpv5data.Flags = uint16(flags)
 
 			if (receivedNtpv5data.ReferenceIDsRequestEx.Length > 0){
-				ex := ntpv5.ReferenceIDsResponse{}
-				ex.Length = receivedNtpv5data.ReferenceIDsRequestEx.Length
-				ntpv5data.ReferenceIDsResponseEx = ex
+				ntpv5data.ReferenceIDsResponseEx = ntpv5.ReferenceIDsResponse{
+					Length: receivedNtpv5data.ReferenceIDsRequestEx.Length,
+				}
+			}
+			if (receivedNtpv5data.ServerInformationEx.Length > 0){
+				ntpv5data.ServerInformationEx = ntpv5.ServerInformation{
+					Length: 8,
+					SupportedNtpVersions: uint16(info),
+				}
+			}
+			if (receivedNtpv5data.DraftIdentificationEx.Length > 0){
+				l := receivedNtpv5data.DraftIdentificationEx.Length - 4
+				if(l > uint16(len(draft)) ){
+					l = uint16(len(draft))
+				}
+
+
+				ntpv5data.DraftIdentificationEx = ntpv5.DraftIdentification{
+					Length: uint16(l) + 4,
+					Draft: draft[:l],
+				}
 			}
 
 			transmitTimestamp := ntpv5.GetTimestampNow()
@@ -89,5 +116,9 @@ func init() {
 	rootCmd.AddCommand(serverCmd)
         serverCmd.Flags().IntP("port", "p", 10123, "Target Aort number")
         serverCmd.Flags().StringP("bind", "b", "0.0.0.0", "Bind Adress")
+	serverCmd.Flags().IntP("timescale", "t", 0, "Timescale type")
+	serverCmd.Flags().IntP("flags", "f", 0, "Flags")
+	serverCmd.Flags().StringP("draft", "a", "draft-mlichvar-ntp-ntpv5-07 ", "Draft Identification")
+	serverCmd.Flags().IntP("info", "i", 16, "Server Information")
         serverCmd.Flags().BoolP("verbose", "v", false, "verbose")
 }

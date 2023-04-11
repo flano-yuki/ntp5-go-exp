@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net"
 	"log"
+	"time"
 	"os"
 	"strconv"
 
@@ -27,8 +28,40 @@ func execClient(cmd *cobra.Command, args []string){
 	port, _ := cmd.Flags().GetInt("port")
 	host := args[0]
 
+	refreq, _ := cmd.Flags().GetInt("refreq")
+	padding, _ := cmd.Flags().GetInt("padding")
+	info, _ := cmd.Flags().GetBool("info")
+	draft, _ := cmd.Flags().GetString("draft")
+	timescale, _ := cmd.Flags().GetInt("timescale")
+	flags, _ := cmd.Flags().GetInt("flags")
+
 	// struct packet data
 	ntpv5data := ntpv5.NewClientNtpv5Data()
+	ntpv5data.Timescale = uint8(timescale)
+	ntpv5data.Flags = uint16(flags)
+
+	if (padding > 0){
+		ntpv5data.PaddingEx = ntpv5.Padding{
+			Length: uint16(padding),
+		}
+	}
+	if (refreq > 0){
+		ntpv5data.ReferenceIDsRequestEx = ntpv5.ReferenceIDsRequest{
+			Length: uint16(refreq),
+			Offset: 0,
+		}
+	}
+	if (info){
+		ntpv5data.ServerInformationEx = ntpv5.ServerInformation{
+			Length: uint16(8),
+		}
+	}
+	if (len(draft) > 0){
+		ntpv5data.DraftIdentificationEx = ntpv5.DraftIdentification{
+			Length: uint16(4 + len(draft)),
+			Draft: draft,
+		}
+	}
 	fmt.Println("Send NTPv5 Data: \n", ntpv5data)
 
 	buffer := ntpv5.Encode(ntpv5data)
@@ -40,6 +73,7 @@ func execClient(cmd *cobra.Command, args []string){
 		os.Exit(1)
 	}
 
+	conn.SetReadDeadline(time.Now().Add(3 * time.Second))
 	defer conn.Close()
 
 	_, err = conn.Write(buffer)
@@ -59,6 +93,12 @@ func execClient(cmd *cobra.Command, args []string){
 
 func init() {
 	rootCmd.AddCommand(clientCmd)
-	clientCmd.Flags().IntP("port", "p", 123, "Target Aort number")
+	clientCmd.Flags().IntP("port", "p", 123, "Target Port number")
 	clientCmd.Flags().BoolP("verbose", "v", false, "verbose")
+	clientCmd.Flags().IntP("refreq", "r", 0, "ReferenceIDsRequest length")
+	clientCmd.Flags().IntP("flags", "f", 0, "Flags")
+	clientCmd.Flags().IntP("padding", "d", 0, "Padding length")
+	clientCmd.Flags().BoolP("info", "i", false, "Server Information")
+	clientCmd.Flags().StringP("draft", "a", "", "Draft Identification")
+	clientCmd.Flags().IntP("timescale", "t", 0, "Timescale type")
 }

@@ -24,6 +24,7 @@ type Ntpv5Data struct {
 	TransmitTimestamp uint64
 
 	//TODO: Extension
+	PaddingEx Padding
 	ReferenceIDsRequestEx ReferenceIDsRequest
 	ReferenceIDsResponseEx ReferenceIDsResponse
 	ServerInformationEx ServerInformation
@@ -85,6 +86,13 @@ func NewServerNtpv5Data() Ntpv5Data{
 	}
 }
 
+type Padding struct {
+	Length uint16
+}
+func (d Padding) String() string{
+	return fmt.Sprintf(
+		"Type: 0xF501, Name: Padding, Length: %d", d.Length)
+}
 
 type ReferenceIDsRequest struct {
 	Length uint16
@@ -108,13 +116,12 @@ func (d ReferenceIDsResponse) String() string{
 
 type ServerInformation struct {
 	Length uint16
-	Offset uint16
 	SupportedNtpVersions uint16
 }
 func (d ServerInformation) String() string{
 	return fmt.Sprintf(
 		"Type: 0xF505, Name: ServerInformation, Length: %d, SupportedNtpVersions: %d",
-		d.Length, d.Offset )
+		d.Length, d.SupportedNtpVersions)
 }
 
 type ReferenceTimestamp struct {
@@ -142,12 +149,12 @@ func (d SecondaryReceiveTimestamp) String() string{
 
 type DraftIdentification struct {
 	Length uint16
-	draftVersion string
+	Draft string
 }
 func (d DraftIdentification) String() string{
 	return fmt.Sprintf(
-		"Type: 0xF5FF, Name: DraftIdentification, Length: %d, draftVersion: %s",
-		d.Length, d.draftVersion )
+		"Type: 0xF5FF, Name: DraftIdentification, Length: %d, Draft: %s",
+		d.Length, d.Draft )
 }
 
 // Utils

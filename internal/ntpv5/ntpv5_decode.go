@@ -61,7 +61,7 @@ func Decode(b []byte) Ntpv5Data {
 		    case 0xF5FF:
 			ex := DraftIdentification{}
 			ex.Length = extensionLenght
-			ex.draftVersion = string(extensions[4:(ex.Length)])
+			ex.Draft = string(extensions[4:(ex.Length)])
 			ntpv5data.DraftIdentificationEx = ex
 		}
 
