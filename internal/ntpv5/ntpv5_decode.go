@@ -34,13 +34,22 @@ func Decode(b []byte) Ntpv5Data {
 		}
 		extensionType := (uint16(extensions[0]) << 8) + uint16(extensions[1])
 		extensionLenght := (uint16(extensions[2]) << 8) + uint16(extensions[3])
+		// check rest buffer size
 
 		switch extensionType {
+		    case 0xF501:
+			ex := Padding{}
+			ex.Length = extensionLenght
+			ntpv5data.PaddingEx = ex
 		    case 0xF503:
 			ex := ReferenceIDsRequest{}
 			ex.Length = extensionLenght
 			ex.Offset = (uint16(extensions[4]) << 8) + uint16(extensions[5])
 			ntpv5data.ReferenceIDsRequestEx = ex
+		    case 0xF504:
+			ex := ReferenceIDsResponse{}
+			ex.Length = extensionLenght
+			ntpv5data.ReferenceIDsResponseEx = ex
 		    case 0xF505:
 			ex := ServerInformation{}
 			ex.Length = extensionLenght
@@ -63,6 +72,13 @@ func Decode(b []byte) Ntpv5Data {
 			ex.Length = extensionLenght
 			ex.Draft = string(extensions[4:(ex.Length)])
 			ntpv5data.DraftIdentificationEx = ex
+		    default:
+                        ex := Unknown{}
+			ex.Type = extensionType
+                        ex.Length = extensionLenght
+			copy(ex.Payload, extensions[4:(ex.Length)])
+                        _ = append(ntpv5data.UnknownExs, ex)
+
 		}
 
 		extensions = extensions[extensionLenght:]

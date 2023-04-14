@@ -1,0 +1,38 @@
+{
+	"Description": "Simple valid data set",
+	"SendNtpv5Data": {
+		"LI": 0,
+		"VN": 5,
+		"Mode": 3,
+		"Stratum": 0,
+		"Poll": 0,
+		"Precision": 0,
+		"Timescale": 0,
+		"Era": 0,
+		"Flags": 0,
+		"RootDelay": 0,
+		"RootDisperasion": 0,
+		"ServerCookie": 0,
+		"ClientCookie": 1234,
+		"ReceiveTimestamp": 0,
+		"TransmitTimestamp": 0,
+		"PaddingEx": {
+			"Length": 40
+		}
+	},
+	"ResponseTimeout": false,
+	"ResponseMatch": [
+		{"Property": "VN", "Value": 5},
+		{"Property": "Mode", "Value": 4},
+		{"Property": "ClientCookie", "Value": 1234},
+		{"Property": "ServerCookie", "Value": 0}
+	],
+	"ResponseUnmatch": [
+		{"Property": "Stratum", "Value": 0},
+		{"Property": "ReceiveTimestamp", "Value": 0},
+		{"Property": "TransmitTimestamp", "Value": 0}
+	],
+	"ResponseMayUnmatch": [
+		{"Property": "RootDelay", "Value": 0}
+	]
+}

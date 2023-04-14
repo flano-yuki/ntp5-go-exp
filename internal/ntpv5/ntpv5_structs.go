@@ -31,6 +31,7 @@ type Ntpv5Data struct {
 	ReferenceTimestampEx ReferenceTimestamp
 	SecondaryReceiveTimestampEx SecondaryReceiveTimestamp
 	DraftIdentificationEx DraftIdentification
+	UnknownExs []Unknown
 }
 
 func (d Ntpv5Data) String() string{
@@ -157,6 +158,17 @@ func (d DraftIdentification) String() string{
 		d.Length, d.Draft )
 }
 
+type Unknown struct {
+	Type uint16
+	Length uint16
+	Payload []byte
+}
+func (d Unknown) String() string{
+	return fmt.Sprintf(
+		"Type: %s, Name: Unknown Extension, Length: %d, Draft: %s",
+		d.Type, d.Length, d.Payload )
+}
+
 // Utils
 func GetTimestampNow() uint64 {
 	now := time.Now()
@@ -166,3 +178,4 @@ func GetTimestampNow() uint64 {
 
 	return timestamp
 }
+

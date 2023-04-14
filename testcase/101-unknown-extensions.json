@@ -1,0 +1,28 @@
+{
+	"Description": "Unknown Extension Type",
+	"SendNtpv5Data": {
+		"LI": 0,
+		"VN": 5,
+		"Mode": 3,
+		"Stratum": 0,
+		"Poll": 0,
+		"Precision": 0,
+		"Timescale": 0,
+		"Era": 0,
+		"Flags": 0,
+		"RootDelay": 0,
+		"RootDisperasion": 0,
+		"ServerCookie": 0,
+		"ClientCookie": 1234,
+		"ReceiveTimestamp": 0,
+		"TransmitTimestamp": 0,
+		"PaddingEx": {
+			"Length": 40
+		},
+		"UnknownEXs": [{
+			"Type": 2345,
+			"Length": 40
+		}]
+	},
+	"ResponseTimeout": false
+}
