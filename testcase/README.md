@@ -1,4 +1,4 @@
-# Testcase jsons
+# Testcase json
 The test case specifies the request data to be sent, and checks that the received response values are as specified.
 
 ## Testcase filename Class
@@ -13,7 +13,7 @@ Each test case file has a 3-digit prefix.
 ## How to write testcase
 See [000-simple.json](https://github.com/flano-yuki/ntp5-go-exp/blob/maub/testcase/000-simple.json).
 
-exampl: 
+example: 
 ```
 {
 	"Description": "Simple valid data set",
