@@ -7,7 +7,7 @@ This tool is primarily focused on protocol implementation. Therefore, it does no
 ## Server Test Tool usage
 The server test tool sends a packet specified in a json format test case and checks the value of the received response.
 
-THe default test cases are in the [./testcase](https://github.com/flano-yuki/ntp5-go-exp/tree/featuer/main/testcase) directory. and, test case json descriptions is [here](https://github.com/flano-yuki/ntp5-go-exp/tree/main/testcase#testcase-json).
+The default test cases are in the [./testcase](https://github.com/flano-yuki/ntp5-go-exp/tree/main/testcase) directory. and, The explanation of test case json is [here](https://github.com/flano-yuki/ntp5-go-exp/tree/main/testcase#testcase-json).
 
 ```
 $ go run ./app/ntpv5-cli/main.go test localhost -p 10123 

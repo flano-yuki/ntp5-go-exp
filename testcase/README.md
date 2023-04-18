@@ -46,5 +46,13 @@ example:
 - **ResponseTimeout**: Check response timeout
 - **ResponseMatch**: Checks that the response value matches the specified value.
 - **ResponseUnmatch**: Checks that the response value does not matches the specified value.
-- **ResponseMayMatch**: Checks that the response value matches the specified value. However, even if they do not match, it is not a violation of the specification.
-- **ResponseMayUnmatch**: Checks that the response value does not matches the specified value. However, even if they do not match, it is not a violation of the specification.
+- **ResponseMayMatch**: Checks that the response value matches the specified value. but, it may be not a violation of the specification.
+- **ResponseMayUnmatch**: Checks that the response value does not matches the specified value. But, it may be not a violation of the specification.
+
+### Manipulating Raw Send Data
+It can manipulate the bytes it sends to represent packets with insufficient length or corrupted data.
+
+see: [402-40byte-packet.json](https://github.com/flano-yuki/ntp5-go-exp/blob/main/testcase/402-40byte-packet.json)
+
+- **ForTestShrinkBufferSize**: Truncates the buffer by the specified size
+- **ForTestOverwriteBuffer**: Overwrites the buffer with the given value
