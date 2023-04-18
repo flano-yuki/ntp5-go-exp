@@ -1,0 +1,22 @@
+{
+	"Description": "Missing size data(40byte)",
+	"SendNtpv5Data": {
+		"LI": 0,
+		"VN": 5,
+		"Mode": 3,
+		"Stratum": 0,
+		"Poll": 0,
+		"Precision": 0,
+		"Timescale": 0,
+		"Era": 0,
+		"Flags": 0,
+		"RootDelay": 0,
+		"RootDisperasion": 0,
+		"ServerCookie": 0,
+		"ClientCookie": 1234,
+		"ReceiveTimestamp": 0,
+		"TransmitTimestamp": 0
+	},
+	"ForTestShrinkBufferSize": 8,
+	"ResponseTimeout": true
+}

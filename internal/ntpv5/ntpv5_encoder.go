@@ -95,6 +95,16 @@ func Encode(d Ntpv5Data) []byte {
 
 		length += int(d.DraftIdentificationEx.Length)
 	}
+	for _, unknown := range d.UnknownExs {
+
+		ex := make([]byte, unknown.Length)
+		ex[0], ex[1] = byte(unknown.Type >> 8), byte(unknown.Type & 255)
+		ex[2] = byte(unknown.Length >> 8)
+		ex[3] = byte(unknown.Length & 255)
+
+		b = append(b, ex...)
+		length += int(unknown.Length)
+	}
 
 	return b[:length]
 }

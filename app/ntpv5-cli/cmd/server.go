@@ -36,12 +36,13 @@ func execServer(cmd *cobra.Command, args []string){
 		Port: port,
 	}
 	conn, err := net.ListenUDP("udp", udpAddr)
+	fmt.Println("Listen on:", bind, port)
 
 	if err != nil {
 		log.Fatalln(err)
 		os.Exit(1)
 	}
-	readBuffer := make([]byte, 256)
+	readBuffer := make([]byte, 1024)
 	for {
 		// Receive
 		readLength, addr, err := conn.ReadFromUDP(readBuffer)

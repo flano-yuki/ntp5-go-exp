@@ -1,8 +1,50 @@
 # ntp5-go-exp
 
-This is an experimental NTPv5 server and client implementation in Go language.
+This is an experimental NTPv5 client, server and server-test tool implementation in Go language.
 
 This tool is primarily focused on protocol implementation. Therefore, it does not provide filtering algorithms or time alignment functions on the nodes.
+
+## Server Test Tool usage
+The server test tool sends a packet specified in a json format test case and checks the value of the received response.
+
+THe default test cases are in the [./testcase](https://github.com/flano-yuki/ntp5-go-exp/tree/featuer/main/testcase) directory.
+
+```
+$ go run ./app/ntpv5-cli/main.go test localhost -p 10123 
+Connect: localhost:10123
+
+./testcase/000-simple.json
+	[OK] Response SHOULD NOT timeout
+	[OK] VN SHOULD be 5 (5)
+	[OK] Mode SHOULD be 4 (4)
+	[OK] ClientCookie SHOULD be 1234 (1234)
+	[OK] ServerCookie SHOULD be 0 (0)
+	[OK] Stratum SHOULD NOT be 0 (2)
+	[OK] ReceiveTimestamp SHOULD NOT be 0 (16710952955318547277)
+	[OK] TransmitTimestamp SHOULD NOT be 0 (16710952955319174996)
+	[OptionalOK] RootDelay MAY NOT be 0 (11141717)
+
+./testcase/001-refid-request.json
+	[OK] Response SHOULD NOT timeout
+	[OK] ReferenceIDsResponseEx.Length SHOULD NOT be 0 (100)
+
+...
+```
+
+Options:
+
+```
+$ go run ./app/ntpv5-cli/main.go test --help
+Usage:
+  ntpv5-cli test HOSTNAME [flags]
+
+Flags:
+  -d, --dir string    Testcase Directory (default "./testcase/")
+  -h, --help          help for test
+  -p, --port int      Target Port number (default 123)
+  -t, --timeout int   Timeout Secound (default 1)
+
+```
 
 ## Client usage
 Example:

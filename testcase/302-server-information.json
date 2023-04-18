@@ -1,0 +1,28 @@
+{
+	"Description": "Send Server Information Extension",
+	"SendNtpv5Data": {
+		"LI": 0,
+		"VN": 5,
+		"Mode": 3,
+		"Stratum": 0,
+		"Poll": 0,
+		"Precision": 0,
+		"Timescale": 0,
+		"Era": 0,
+		"Flags": 0,
+		"RootDelay": 0,
+		"RootDisperasion": 0,
+		"ServerCookie": 0,
+		"ClientCookie": 1234,
+		"ReceiveTimestamp": 0,
+		"TransmitTimestamp": 0,
+		"ServerInformationEx": {
+			"Length": 8
+		}
+	},
+	"ResponseTimeout": false,
+	"ResponseMayUnmatch": [
+		{"Property": "ServerInformationEx.Length", "Value": 0},
+		{"Property": "ServerInformationEx.SupportedNtpVersions", "Value": 0}
+	]
+}
