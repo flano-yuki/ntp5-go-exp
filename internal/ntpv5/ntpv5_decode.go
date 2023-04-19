@@ -3,9 +3,14 @@ package ntpv5
 import (
 	"encoding/binary"
 	"bytes"
+	"errors"
 )
 
-func Decode(b []byte) Ntpv5Data {
+func Decode(b []byte) (Ntpv5Data, error) {
+	if (len(b) < 48){
+		return Ntpv5Data{}, errors.New("Buffer Size is insufficient")
+	}
+
 	ntpv5data := Ntpv5Data{}
 	ntpv5data.LI = (b[0] >> 6) & 3
 	ntpv5data.VN = (b[0] >> 3) & 7
@@ -28,13 +33,18 @@ func Decode(b []byte) Ntpv5Data {
 	// decode extensions
 	extensions := b[48:]
 	for {
-		if len(extensions) < 4 {
-			// TODO error Handling
+		if len(extensions) == 0 {
 			break
+		}
+		if len(extensions) < 4 {
+			return Ntpv5Data{}, errors.New("insufficient extension headers")
 		}
 		extensionType := (uint16(extensions[0]) << 8) + uint16(extensions[1])
 		extensionLenght := (uint16(extensions[2]) << 8) + uint16(extensions[3])
 		// check rest buffer size
+		if (len(extensions) <  int(extensionLenght)) {
+			return Ntpv5Data{}, errors.New("insufficient extension payload")
+		}
 
 		switch extensionType {
 		    case 0xF501:
@@ -85,5 +95,5 @@ func Decode(b []byte) Ntpv5Data {
 
 	}
 
-	return ntpv5data
+	return ntpv5data, nil
 }

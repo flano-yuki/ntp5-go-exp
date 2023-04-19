@@ -102,7 +102,7 @@ func execTestcase(target string, timeoutSec int, testcase ntpv5.Testcase){
 		fmt.Println("	[OK] Response SHOULD NOT timeout")
 	}
 
-	receivedNtpv5data := ntpv5.Decode(readBuffer[:readLength])
+	receivedNtpv5data, _ := ntpv5.Decode(readBuffer[:readLength])
 	reflectValue := reflect.ValueOf(receivedNtpv5data)
 
 	// Check ResponseMatch tests

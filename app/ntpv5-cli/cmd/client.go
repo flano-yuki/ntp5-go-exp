@@ -84,7 +84,7 @@ func execClient(cmd *cobra.Command, args []string){
 	if err != nil {
 		panic(err)
 	}
-	receivedNtpv5data := ntpv5.Decode(readBuffer[:readLength])
+	receivedNtpv5data, _ := ntpv5.Decode(readBuffer[:readLength])
 	fmt.Println("Received NTPv5 Data(" + conn.RemoteAddr().String() + "):\n", receivedNtpv5data)
 	fmt.Println("\n")
 

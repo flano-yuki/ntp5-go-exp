@@ -49,16 +49,27 @@ func execServer(cmd *cobra.Command, args []string){
 		if err != nil {
 			log.Fatalln(err)
 		}
+		if (readLength < 48 || readLength % 4 != 0){
+			continue
+		}
 
 		go func() {
 			// Handling Receive Data
 			receiveTimestamp := ntpv5.GetTimestampNow()
 
-			receivedNtpv5data := ntpv5.Decode(readBuffer[:readLength])
-			fmt.Println("Receive NTPv5 Data(" + addr.String() + "): \n", receivedNtpv5data)
-			fmt.Println("refid: \n", receivedNtpv5data.ReferenceIDsRequestEx)
+			receivedNtpv5data, err := ntpv5.Decode(readBuffer[:readLength])
 
-			verifyNtpv5Data(receivedNtpv5data)
+			// failure decode
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+
+			fmt.Println("Receive NTPv5 Data(" + addr.String() + "): \n", receivedNtpv5data)
+
+			if (!verifyNtpv5Data(receivedNtpv5data)){
+				return
+			}
 
 			// Struct Response
 		        ntpv5data := ntpv5.NewServerNtpv5Data()
@@ -106,6 +117,9 @@ func execServer(cmd *cobra.Command, args []string){
 }
 
 func verifyNtpv5Data (d ntpv5.Ntpv5Data) bool {
+	if( d.VN != 5 || d.Mode != 3){
+		return false
+	}
 	return true
 }
 
