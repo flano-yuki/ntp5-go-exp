@@ -34,6 +34,7 @@ func execClient(cmd *cobra.Command, args []string){
 	draft, _ := cmd.Flags().GetString("draft")
 	timescale, _ := cmd.Flags().GetInt("timescale")
 	flags, _ := cmd.Flags().GetInt("flags")
+	reference, _ := cmd.Flags().GetBool("reference")
 
 	// struct packet data
 	ntpv5data := ntpv5.NewClientNtpv5Data()
@@ -54,6 +55,11 @@ func execClient(cmd *cobra.Command, args []string){
 	if (info){
 		ntpv5data.ServerInformationEx = ntpv5.ServerInformation{
 			Length: uint16(8),
+		}
+	}
+	if (reference){
+		ntpv5data.ReferenceTimestampEx = ntpv5.ReferenceTimestamp{
+			Length: uint16(12),
 		}
 	}
 	if (len(draft) > 0){
@@ -82,7 +88,12 @@ func execClient(cmd *cobra.Command, args []string){
 	readBuffer := make([]byte, 1500)
 	readLength, err := conn.Read(readBuffer)
 	if err != nil {
-		panic(err)
+		if netErr, isNetErr := err.(net.Error); isNetErr && netErr.Timeout() {
+			fmt.Println("Timeout")
+			return;
+		} else {
+			panic(err)
+		}
 	}
 	receivedNtpv5data, _ := ntpv5.Decode(readBuffer[:readLength])
 	fmt.Println("Received NTPv5 Data(" + conn.RemoteAddr().String() + "):\n", receivedNtpv5data)
@@ -97,7 +108,8 @@ func init() {
 	clientCmd.Flags().IntP("refreq", "r", 0, "ReferenceIDsRequest length")
 	clientCmd.Flags().IntP("flags", "f", 0, "Flags")
 	clientCmd.Flags().IntP("padding", "d", 0, "Padding length")
-	clientCmd.Flags().BoolP("info", "i", false, "Server Information")
-	clientCmd.Flags().StringP("draft", "a", "", "Draft Identification")
 	clientCmd.Flags().IntP("timescale", "t", 0, "Timescale type")
+	clientCmd.Flags().BoolP("info", "i", false, "Server Information")
+	clientCmd.Flags().BoolP("reference", "e", false, "Reference Timestamp")
+	clientCmd.Flags().StringP("draft", "a", "", "Draft Identification")
 }

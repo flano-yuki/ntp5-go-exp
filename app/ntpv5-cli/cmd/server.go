@@ -89,6 +89,12 @@ func execServer(cmd *cobra.Command, args []string){
 					SupportedNtpVersions: uint16(info),
 				}
 			}
+			if (receivedNtpv5data.ReferenceTimestampEx.Length > 0){
+				ntpv5data.ReferenceTimestampEx = ntpv5.ReferenceTimestamp{
+					Length: 12,
+					ReferenceTimestamp: ntpv5.GetTimestampNow(),
+				}
+			}
 			if (receivedNtpv5data.DraftIdentificationEx.Length > 0){
 				l := receivedNtpv5data.DraftIdentificationEx.Length - 4
 				if(l > uint16(len(draft)) ){
