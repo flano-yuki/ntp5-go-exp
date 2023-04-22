@@ -63,19 +63,27 @@ func Decode(b []byte) (Ntpv5Data, error) {
 		    case 0xF505:
 			ex := ServerInformation{}
 			ex.Length = extensionLenght
+			if ( ex.Length != 8) {
+				return Ntpv5Data{}, errors.New("invalid ServerInformation.Length")
+			}
 			ex.SupportedNtpVersions = (uint16(extensions[4]) << 8) + uint16(extensions[5])
 			ntpv5data.ServerInformationEx = ex
 		    case 0xF507:
 			ex := ReferenceTimestamp{}
 			ex.Length = extensionLenght
-			binary.Read(bytes.NewReader(b[4:12]), binary.BigEndian, &ex.ReferenceTimestamp)
+
+			binary.Read(bytes.NewReader(extensions[4:12]),
+				binary.BigEndian,
+				&ex.ReferenceTimestamp)
 			ntpv5data.ReferenceTimestampEx = ex
 		    case 0xF509:
 			ex := SecondaryReceiveTimestamp{}
 			ex.Length = extensionLenght
 			ex.Timescale = extensions[4]
 			ex.Era = extensions[5]
-			binary.Read(bytes.NewReader(b[8:16]), binary.BigEndian, &ex.SecondaryReceiveTimestamp)
+			binary.Read(bytes.NewReader(extensions[8:16]),
+				binary.BigEndian,
+				&ex.SecondaryReceiveTimestamp)
 			ntpv5data.SecondaryReceiveTimestampEx = ex
 		    case 0xF5FF:
 			ex := DraftIdentification{}
