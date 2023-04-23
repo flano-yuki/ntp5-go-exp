@@ -1,5 +1,5 @@
 {
-	"Description": "Send short Server Information Extension",
+	"Description": "Send short Server Information Extension. Its minimum size is 8, but it will be sent in 4 bytes",
 	"SendNtpv5Data": {
 		"LI": 0,
 		"VN": 5,

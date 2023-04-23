@@ -102,6 +102,14 @@ func execTestcase(target string, timeoutSec int, testcase ntpv5.Testcase){
 		fmt.Println("	[OK] Response SHOULD NOT timeout")
 	}
 
+	// Check Request size and Response size are same
+	result := "	[OK] "
+	if (len(buffer) != readLength){
+		result = "	[NG] "
+	}
+	fmt.Println(result + "Request size and Response size SHOULD be same "+
+		"(" + strconv.Itoa(len(buffer)) + ", " + strconv.Itoa(readLength) + ")")
+
 	receivedNtpv5data, _ := ntpv5.Decode(readBuffer[:readLength])
 	reflectValue := reflect.ValueOf(receivedNtpv5data)
 

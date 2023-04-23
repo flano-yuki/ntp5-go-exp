@@ -108,6 +108,18 @@ func execServer(cmd *cobra.Command, args []string){
 				}
 			}
 
+			// Padding rest
+			restLength := readLength - len(ntpv5.Encode(ntpv5data))
+			if (restLength > 0){
+				ntpv5data.PaddingEx = ntpv5.Padding{
+					Length: uint16(restLength),
+				}
+			} else {
+				//Todo: ?
+				fmt.Println("Todo?")
+			}
+
+
 			transmitTimestamp := ntpv5.GetTimestampNow()
 			ntpv5data.TransmitTimestamp = transmitTimestamp
 

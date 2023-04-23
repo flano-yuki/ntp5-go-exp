@@ -1,5 +1,5 @@
 {
-	"Description": "Send short Reference Timestamp Extension",
+	"Description": "Send short Reference Timestamp Extension. Its minimum size is 12, but it will be sent in 8 bytes",
 	"SendNtpv5Data": {
 		"LI": 0,
 		"VN": 5,
