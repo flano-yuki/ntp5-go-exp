@@ -49,6 +49,8 @@ example:
 - **ResponseMayMatch**: Checks that the response value matches the specified value. but, it may be not a violation of the specification.
 - **ResponseMayUnmatch**: Checks that the response value does not matches the specified value. But, it may be not a violation of the specification.
 
+* Checking that request and response sizes are same is the default.
+
 ### Manipulating Raw Send Data
 It can manipulate the bytes it sends to represent packets with insufficient length or corrupted data.
 

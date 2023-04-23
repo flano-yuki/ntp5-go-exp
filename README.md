@@ -15,6 +15,7 @@ Connect: localhost:10123
 
 ./testcase/000-simple.json
 	[OK] Response SHOULD NOT timeout
+	[OK] Request size and Response size SHOULD be same (88, 88)
 	[OK] VN SHOULD be 5 (5)
 	[OK] Mode SHOULD be 4 (4)
 	[OK] ClientCookie SHOULD be 1234 (1234)
@@ -22,10 +23,10 @@ Connect: localhost:10123
 	[OK] Stratum SHOULD NOT be 0 (2)
 	[OK] ReceiveTimestamp SHOULD NOT be 0 (16710952955318547277)
 	[OK] TransmitTimestamp SHOULD NOT be 0 (16710952955319174996)
-	[OptionalOK] RootDelay MAY NOT be 0 (11141717)
 
 ./testcase/001-refid-request.json
 	[OK] Response SHOULD NOT timeout
+	[OK] Request size and Response size SHOULD be same (148, 148)
 	[OK] ReferenceIDsResponseEx.Length SHOULD NOT be 0 (100)
 
 ...

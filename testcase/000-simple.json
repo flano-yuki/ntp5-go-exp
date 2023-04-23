@@ -31,8 +31,5 @@
 		{"Property": "Stratum", "Value": 0},
 		{"Property": "ReceiveTimestamp", "Value": 0},
 		{"Property": "TransmitTimestamp", "Value": 0}
-	],
-	"ResponseMayUnmatch": [
-		{"Property": "RootDelay", "Value": 0}
 	]
 }
