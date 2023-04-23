@@ -29,7 +29,7 @@ type Ntpv5Data struct {
 	ReferenceIDsResponseEx ReferenceIDsResponse
 	ServerInformationEx ServerInformation
 	ReferenceTimestampEx ReferenceTimestamp
-	SecondaryReceiveTimestampEx SecondaryReceiveTimestamp
+	SecondaryReceiveTimestampExs []SecondaryReceiveTimestamp
 	DraftIdentificationEx DraftIdentification
 	UnknownExs []Unknown
 }

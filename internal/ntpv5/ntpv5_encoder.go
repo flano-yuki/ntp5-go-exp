@@ -96,6 +96,20 @@ func Encode(d Ntpv5Data) []byte {
 
 		length += int(d.ReferenceTimestampEx.Length)
 	}
+	for _, srt := range d.SecondaryReceiveTimestampExs {
+		ex := make([]byte, srt.Length)
+		ex[0], ex[1] = 0xF5, 0x09
+		ex[2] = byte(srt.Length >> 8)
+		ex[3] = byte(srt.Length & 255)
+		ex[4] = byte(srt.Timescale)
+		ex[5] = byte(srt.Era)
+
+		binary.BigEndian.PutUint64(tmp, uint64(srt.SecondaryReceiveTimestamp))
+		copy(ex[8:16], tmp[0:8])
+
+		b = append(b, ex...)
+		length += int(srt.Length)
+	}
 	if (d.DraftIdentificationEx.Length > 0){
 		ex := make([]byte, 4)
 		ex[0], ex[1] = 0xF5, 0xFF

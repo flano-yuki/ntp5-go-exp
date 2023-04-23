@@ -84,7 +84,7 @@ func Decode(b []byte) (Ntpv5Data, error) {
 			binary.Read(bytes.NewReader(extensions[8:16]),
 				binary.BigEndian,
 				&ex.SecondaryReceiveTimestamp)
-			ntpv5data.SecondaryReceiveTimestampEx = ex
+                        _ = append(ntpv5data.SecondaryReceiveTimestampExs, ex)
 		    case 0xF5FF:
 			ex := DraftIdentification{}
 			ex.Length = extensionLenght

@@ -95,6 +95,9 @@ func execServer(cmd *cobra.Command, args []string){
 					ReferenceTimestamp: ntpv5.GetTimestampNow(),
 				}
 			}
+			if (len(receivedNtpv5data.SecondaryReceiveTimestampExs) > 0){
+				//TODO:impl
+			}
 			if (receivedNtpv5data.DraftIdentificationEx.Length > 0){
 				l := receivedNtpv5data.DraftIdentificationEx.Length - 4
 				if(l > uint16(len(draft)) ){
