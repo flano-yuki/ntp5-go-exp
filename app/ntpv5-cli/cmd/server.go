@@ -150,7 +150,7 @@ func init() {
         serverCmd.Flags().StringP("bind", "b", "0.0.0.0", "Bind Adress")
 	serverCmd.Flags().IntP("timescale", "t", 0, "Timescale type")
 	serverCmd.Flags().IntP("flags", "f", 0, "Flags")
-	serverCmd.Flags().StringP("draft", "a", "draft-mlichvar-ntp-ntpv5-07 ", "Draft Identification")
+	serverCmd.Flags().StringP("draft", "a", "draft-ietf-ntp-ntpv5-00", "Draft Identification")
 	serverCmd.Flags().IntP("info", "i", 16, "Server Information")
         serverCmd.Flags().BoolP("verbose", "v", false, "verbose")
 }

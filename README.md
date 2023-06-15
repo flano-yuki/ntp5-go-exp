@@ -104,7 +104,7 @@ Usage:
 
 Flags:
   -b, --bind string     Bind Adress (default "0.0.0.0")
-  -a, --draft string    Draft Identification (default "draft-mlichvar-ntp-ntpv5-07 ")
+  -a, --draft string    Draft Identification (default "draft-ietf-ntp-ntpv5-00")
   -f, --flags int       Flags
   -h, --help            help for server
   -i, --info int        Server Information (default 16)
