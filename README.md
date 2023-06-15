@@ -4,6 +4,8 @@ This is an experimental NTPv5 client, server and server-test tool implementation
 
 This tool is primarily focused on protocol implementation. Therefore, it does not provide filtering algorithms or time alignment functions on the nodes.
 
+This is implemented with reference to `draft-ietf-ntp-ntpv5-00` .
+
 ## Server Test Tool usage
 The server test tool sends a packet specified in a json format test case and checks the value of the received response.
 
