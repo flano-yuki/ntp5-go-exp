@@ -55,7 +55,7 @@ func execServer(cmd *cobra.Command, args []string){
 
 		go func() {
 			// Handling Receive Data
-			receiveTimestamp := ntpv5.GetTimestampNow()
+			receiveTimestamp := ntpv5.GetTimestampNow(0)
 
 			receivedNtpv5data, err := ntpv5.Decode(readBuffer[:readLength])
 
@@ -92,7 +92,7 @@ func execServer(cmd *cobra.Command, args []string){
 			if (receivedNtpv5data.ReferenceTimestampEx.Length > 0){
 				ntpv5data.ReferenceTimestampEx = ntpv5.ReferenceTimestamp{
 					Length: 12,
-					ReferenceTimestamp: ntpv5.GetTimestampNow(),
+					ReferenceTimestamp: ntpv5.GetTimestampNow(0),
 				}
 			}
 			if (len(receivedNtpv5data.SecondaryReceiveTimestampExs) > 0){
@@ -123,7 +123,7 @@ func execServer(cmd *cobra.Command, args []string){
 			}
 
 
-			transmitTimestamp := ntpv5.GetTimestampNow()
+			transmitTimestamp := ntpv5.GetTimestampNow(0)
 			ntpv5data.TransmitTimestamp = transmitTimestamp
 
 			fmt.Println("Send NTPv5 Data(" + addr.String() + "): \n", ntpv5data)

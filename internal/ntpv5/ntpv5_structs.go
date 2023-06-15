@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-// https://www.ietf.org/archive/id/draft-mlichvar-ntp-ntpv5-07.html#section-4
+// https://www.ietf.org/archive/id/draft-ietf-ntp-ntpv5-00.html#section-4
 type Ntpv5Data struct {
 	LI uint8
 	VN uint8
@@ -29,6 +29,7 @@ type Ntpv5Data struct {
 	ReferenceIDsResponseEx ReferenceIDsResponse
 	ServerInformationEx ServerInformation
 	ReferenceTimestampEx ReferenceTimestamp
+	MonotonicReceiveTimestampEx MonotonicReceiveTimestamp
 	SecondaryReceiveTimestampExs []SecondaryReceiveTimestamp
 	DraftIdentificationEx DraftIdentification
 	UnknownExs []Unknown
@@ -135,6 +136,18 @@ func (d ReferenceTimestamp) String() string{
 		d.Length, d.ReferenceTimestamp )
 }
 
+type MonotonicReceiveTimestamp struct {
+	Length uint16
+	Epoch uint32
+	MonotonicReceiveTimestamp uint64
+}
+func (d MonotonicReceiveTimestamp) String() string{
+	return fmt.Sprintf(
+		"Type: 0xF509, Name: SecondaryReceiveTimestamp, Length: %d, "+
+		"Epoch: %d, MonotonicReceiveTimestamp:%d",
+		d.Length, d.Epoch, d.MonotonicReceiveTimestamp )
+}
+
 type SecondaryReceiveTimestamp struct {
 	Length uint16
 	Timescale uint8
@@ -170,12 +183,16 @@ func (d Unknown) String() string{
 }
 
 // Utils
-func GetTimestampNow() uint64 {
+func GetTimestampNow(timescale int) uint64 {
 	now := time.Now()
 	sec := uint64(now.Unix()) + 2208988800
 	nanosec := uint64( (float64(now.Nanosecond())/1000000000) * (1<<32))
 	timestamp := (sec << 32) +  nanosec
 
+	// TAI
+	if(timescale == 1){
+		timestamp += 37
+	}
 	return timestamp
 }
 
