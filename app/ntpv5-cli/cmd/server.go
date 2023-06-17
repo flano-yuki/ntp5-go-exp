@@ -54,9 +54,17 @@ func execServer(cmd *cobra.Command, args []string){
 		}
 
 		go func() {
+			// Recovery
+			defer func() {
+				if rec := recover(); rec != nil {
+					err = fmt.Errorf("Recovered from: %w", rec)
+					fmt.Println(err)
+					return
+				}
+			}()
+
 			// Handling Receive Data
 			receiveTimestamp := ntpv5.GetTimestampNow(0)
-
 			receivedNtpv5data, err := ntpv5.Decode(readBuffer[:readLength])
 
 			// failure decode
