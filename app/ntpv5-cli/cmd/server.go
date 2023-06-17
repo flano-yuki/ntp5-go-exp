@@ -9,6 +9,7 @@ import (
 	"net"
 	"log"
 	"os"
+	"runtime"
 
 	"github.com/spf13/cobra"
         "github.com/flano-yuki/ntp5-go-exp/internal/ntpv5"
@@ -59,6 +60,13 @@ func execServer(cmd *cobra.Command, args []string){
 				if rec := recover(); rec != nil {
 					err = fmt.Errorf("Recovered from: %w", rec)
 					fmt.Println(err)
+					for depth := 0; ; depth++ {
+						_, file, line, ok := runtime.Caller(depth)
+						if !ok {
+							break
+						}
+						fmt.Printf("==> %d: %v:%d\n", depth, file, line)
+					}
 					return
 				}
 			}()
@@ -125,7 +133,7 @@ func execServer(cmd *cobra.Command, args []string){
 				ntpv5data.PaddingEx = ntpv5.Padding{
 					Length: uint16(restLength),
 				}
-			} else {
+			} else if(restLength < 0) {
 				//Todo: ?
 				fmt.Println("Todo?")
 			}
@@ -158,7 +166,7 @@ func init() {
         serverCmd.Flags().StringP("bind", "b", "0.0.0.0", "Bind Adress")
 	serverCmd.Flags().IntP("timescale", "t", 0, "Timescale type")
 	serverCmd.Flags().IntP("flags", "f", 0, "Flags")
-	serverCmd.Flags().StringP("draft", "a", "draft-ietf-ntp-ntpv5-00", "Draft Identification")
+	serverCmd.Flags().StringP("draft", "a", "draft-ietf-ntp-ntpv5-00 ", "Draft Identification")
 	serverCmd.Flags().IntP("info", "i", 16, "Server Information")
         serverCmd.Flags().BoolP("verbose", "v", false, "verbose")
 }

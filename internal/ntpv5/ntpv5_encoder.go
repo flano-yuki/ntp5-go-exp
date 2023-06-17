@@ -116,8 +116,8 @@ func Encode(d Ntpv5Data) []byte {
 		ex[2] = byte(d.DraftIdentificationEx.Length >> 8)
 		ex[3] = byte(d.DraftIdentificationEx.Length & 255)
 
+		// TODO: Check the number of characters is a multiple of 4
 		ex = append(ex, []byte(d.DraftIdentificationEx.Draft)...)
-
 		b = append(b, ex...)
 
 		length += int(d.DraftIdentificationEx.Length)
