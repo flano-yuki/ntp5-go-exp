@@ -6,6 +6,11 @@ This tool is primarily focused on protocol implementation. Therefore, it does no
 
 This is implemented with reference to `draft-ietf-ntp-ntpv5-00` .
 
+- [Server Test Tool usage](#server-test-tool-usage)
+- [Client usage](#client-usage)
+- [Server usage](#server-usage)
+- [Dockerfile usage ](#dockerfile-usage)
+
 ## Server Test Tool usage
 The server test tool sends a packet specified in a json format test case and checks the value of the received response.
 
@@ -114,4 +119,17 @@ Flags:
   -t, --timescale int   Timescale type
   -v, --verbose         verbose
 
+```
+
+## Dockerfile usage 
+
+```
+# build
+$ docker build  --tag ntp5-go .
+
+# server
+$ docker run --restart always --publish 10123:10123 --net host ntp5-go server -p 10123
+
+# client
+$ docker run --net host ntp5-go client  localhost -p 10123
 ```
