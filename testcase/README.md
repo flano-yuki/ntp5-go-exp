@@ -11,7 +11,7 @@ Each test case file has a 3-digit prefix.
 - **4xx**: Sends invalid data
 
 ## How to write testcase
-See [000-simple.json](https://github.com/flano-yuki/ntp5-go-exp/blob/maub/testcase/000-simple.json).
+See [000-simple.json](https://github.com/flano-yuki/ntp5-go-exp/blob/main/testcase/000-simple.json).
 
 example: 
 ```
