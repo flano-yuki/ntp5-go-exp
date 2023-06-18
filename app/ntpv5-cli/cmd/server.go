@@ -51,6 +51,7 @@ func execServer(cmd *cobra.Command, args []string){
 			log.Fatalln(err)
 		}
 		if (readLength < 48 || readLength % 4 != 0){
+			fmt.Println("Packet payload length is invalid: ", readLength)
 			continue
 		}
 
