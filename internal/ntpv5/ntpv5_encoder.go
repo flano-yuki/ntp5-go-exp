@@ -84,7 +84,8 @@ func Encode(d Ntpv5Data) []byte {
 		length += int(d.ServerInformationEx.Length)
 	}
 	if (d.ReferenceTimestampEx.Length > 0){
-		ex := make([]byte, 12)
+		// this extension is fixed Length. but, this is variable length for test
+		ex := make([]byte, d.ReferenceTimestampEx.Length)
 		ex[0], ex[1] = 0xF5, 0x07
 		ex[2] = byte(d.ReferenceTimestampEx.Length >> 8)
 		ex[3] = byte(d.ReferenceTimestampEx.Length & 255)
@@ -111,7 +112,8 @@ func Encode(d Ntpv5Data) []byte {
 		length += int(srt.Length)
 	}
 	if (d.DraftIdentificationEx.Length > 0){
-		ex := make([]byte, 4)
+		// this extension is fixed Length. but, this is variable length for test
+		ex := make([]byte, d.DraftIdentificationEx.Length)
 		ex[0], ex[1] = 0xF5, 0xFF
 		ex[2] = byte(d.DraftIdentificationEx.Length >> 8)
 		ex[3] = byte(d.DraftIdentificationEx.Length & 255)
