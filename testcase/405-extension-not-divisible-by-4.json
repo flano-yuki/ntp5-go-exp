@@ -16,6 +16,10 @@
 		"ClientCookie": 1234,
 		"ReceiveTimestamp": 0,
 		"TransmitTimestamp": 0,
+		"DraftIdentificationEx": {
+			"Length": 24,
+			"Draft": "draft-ietf-ntp-ntpv5-00 "
+		},
 		"PaddingEx": {
 			"Length": 41
 		}

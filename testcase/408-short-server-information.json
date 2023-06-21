@@ -20,7 +20,7 @@
 			"Length": 8
 		}
 	},
-        "ForTestShrinkBufferSize": 4,
+	"ForTestShrinkBufferSize": 4,
 	"ForTestOverwriteBuffer" :[
 		{"Index":51, "Value":4}
 	],

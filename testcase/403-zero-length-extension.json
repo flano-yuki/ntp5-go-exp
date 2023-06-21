@@ -19,6 +19,10 @@
 		"ReferenceIDsRequestEx": {
 			"Length": 16,
 			"Offset": 0
+		},
+		"DraftIdentificationEx": {
+			"Length": 24,
+			"Draft": "draft-ietf-ntp-ntpv5-00 "
 		}
 	},
 	"ForTestOverwriteBuffer" :[

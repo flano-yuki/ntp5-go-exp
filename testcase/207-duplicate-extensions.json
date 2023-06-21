@@ -16,6 +16,10 @@
 		"ClientCookie": 1234,
 		"ReceiveTimestamp": 0,
 		"TransmitTimestamp": 0,
+		"DraftIdentificationEx": {
+			"Length": 24,
+			"Draft": "draft-ietf-ntp-ntpv5-00 "
+		},
 		"UnknownExs": [
 			{"Type":62723, "Length": 40 },
 			{"Type":62723, "Length": 48 }
