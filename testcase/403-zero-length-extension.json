@@ -21,7 +21,7 @@
 			"Offset": 0
 		},
 		"DraftIdentificationEx": {
-			"Length": 24,
+			"Length": 28,
 			"Draft": "draft-ietf-ntp-ntpv5-00 "
 		}
 	},

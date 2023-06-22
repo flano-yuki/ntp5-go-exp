@@ -17,7 +17,7 @@
 		"ReceiveTimestamp": 10000000,
 		"TransmitTimestamp": 20000000,
 		"DraftIdentificationEx": {
-			"Length": 24,
+			"Length": 28,
 			"Draft": "draft-ietf-ntp-ntpv5-00 "
 		},
 		"PaddingEx": {
