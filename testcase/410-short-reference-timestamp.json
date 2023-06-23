@@ -16,13 +16,13 @@
 		"ClientCookie": 1234,
 		"ReceiveTimestamp": 0,
 		"TransmitTimestamp": 0,
-		"DraftIdentificationEx": {
-			"Length": 28,
-			"Draft": "draft-ietf-ntp-ntpv5-00 "
-		},
 		"ReferenceTimestampEx": {
-			"Length": 8
+			"Length": 12
 		}
 	},
-	"ResponseTimeout": true
+	"ResponseTimeout": true,
+	"ForTestShrinkBufferSize": 4,
+	"ForTestOverwriteBuffer" :[
+		{"Index":51, "Value":4}
+	]
 }

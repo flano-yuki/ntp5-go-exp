@@ -17,11 +17,7 @@
 		"ReceiveTimestamp": 0,
 		"TransmitTimestamp": 0,
 		"DraftIdentificationEx": {
-			"Length": 28,
-			"Draft": "draft-ietf-ntp-ntpv5-00 "
-		},
-		"DraftIdentificationEx": {
-			"Length": 4
+			"Length": 8
 		}
 	},
 	"ResponseTimeout": false,
